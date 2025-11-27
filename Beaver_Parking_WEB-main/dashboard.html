@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Beaver Parking</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Calibri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <!-- QR Code Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="top-panel">
+        <div class="top-panel-content">
+            <div class="logo-section">
+                <svg class="logo-icon" fill="currentColor" viewBox="0 0 48 48">
+                    <path d="M42.2,28.2H38.5V22h3.6c0.5,0,1-0.2,1.3-0.6c0.4-0.4,0.6-0.8,0.6-1.3v-2.2c0-0.5-0.2-1-0.6-1.3c-0.4-0.4-0.8-0.6-1.3-0.6h-5.9c-2.3,0-4.3,0.8-6.1,2.5s-2.7,3.8-2.7,6.1v4.4H6c-0.5,0-1,0.2-1.3,0.6C4.2,33.2,4,33.7,4,34.2v2.2c0,0.5,0.2,1,0.6,1.3c0.4,0.4,0.8,0.6,1.3,0.6h22.8c0.7,0,1.3-0.1,1.9-0.4c0.6-0.2,1.1-0.6,1.5-1c0,0,0,0,0,0c0.1-0.1,0.1-0.2,0.2-0.2c0,0,0,0,0,0c0.3-0.4,0.6-0.8,0.8-1.3c0.2-0.5,0.3-1.1,0.3-1.6V28.2h8.3c1.9,0,3.5-0.7,4.9-2.1c1.4-1.4,2.1-3,2.1-4.9V19c0-1.9-0.7-3.5-2.1-4.9c-1.4-1.4-3-2.1-4.9-2.1h-5.9v6.2h5.9c0.5,0,1,0.2,1.3,0.6c0.4,0.4,0.6,0.8,0.6,1.3v2.2c0,0.5-0.2,1-0.6,1.3C43.2,28,42.7,28.2,42.2,28.2z"></path>
+                </svg>
+                <h1 class="logo-text">BeaverParking</h1>
+            </div>
+            <nav class="top-nav">
+                <button class="nav-btn" onclick="showSection('inicio')">
+                    <span class="material-symbols-outlined">home</span>
+                    Página Principal
+                </button>
+                <button class="nav-btn" onclick="showSection('vehiculos')">
+                    <span class="material-symbols-outlined">directions_car</span>
+                    Control de Vehículos
+                </button>
+                <button class="nav-btn" onclick="showSection('lugares')" id="lugaresBtn">
+                    <span class="material-symbols-outlined">local_parking</span>
+                    Lugares
+                </button>
+                <button class="nav-btn" onclick="showSection('usuarios')" id="usuariosBtn" style="display:none;">
+                    <span class="material-symbols-outlined">people</span>
+                    Usuarios
+                </button>
+            </nav>
+            <button class="exit-btn" onclick="logout()" title="Cerrar Sesión">
+                <span class="material-symbols-outlined">logout</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content page-content">
+        <!-- Inicio / Homepage -->
+        <div id="inicioSection" class="content-section active">
+            <div class="welcome-panel">
+                <div class="user-info-card">
+                    <div class="user-avatar">
+                        <span class="material-symbols-outlined">account_circle</span>
+                    </div>
+                    <div id="userDetails" class="user-details">
+                        <h2 id="userName">Usuario</h2>
+                        <p class="user-role" id="userRole">Rol</p>
+                    </div>
+                </div>
+
+                <div id="errorMessage" class="alert alert-danger" style="display: none; margin-bottom: 1rem; padding: 0.75rem; background: #FEE2E2; color: #DC2626; border-radius: 0.5rem;"></div>
+                <div id="successMessage" class="alert alert-success" style="display: none; margin-bottom: 1rem; padding: 0.75rem; background: #D1FAE5; color: #059669; border-radius: 0.5rem;"></div>
+
+                <!-- Contenedor vertical para las cajas de vehículos -->
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                    <!-- Caja 1: Título -->
+                    <div class="stat-box">
+                        <div class="stat-info">
+                            <h2>Mis Vehículos</h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-box" style="display: flex; flex-direction: column;">
+                        <!-- Caja 2: Tabla de vehículos -->
+                        <div class="stat-box">
+                            <div id="misVehiculosContainer">
+                                <p style="color: #666; text-align: center;">Haz clic en "Actualizar" para cargar tus vehículos</p>
+                            </div>
+                        </div>
+                        <!-- Caja 3: Botones centrados -->
+                        <div style="display: block;">
+                            <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
+                                <button class="btn-primary" onclick="cargarMisVehiculos()">
+                                    <span class="material-symbols-outlined">refresh</span>
+                                    Actualizar
+                                </button>
+                                <button class="btn-primary" onclick="showSection('vehiculos')">
+                                    <span class="material-symbols-outlined">add</span>
+                                    Agregar vehículo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-box" id="espaciosCard" style="display:none;">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">local_parking</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Espacios Ocupados</h3>
+                            <p class="stat-value" id="espaciosOcupados">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-box" id="lugaresDisponiblesCard" style="display:none;">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">check_circle</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Lugares Disponibles</h3>
+                            <p class="stat-value" id="lugaresDisponibles">20</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registro de Lugar (Solo para trabajadores) -->
+                <div id="registroLugarPanel" class="form-panel" style="display:none;">
+                    <div class="panel-header">
+                        <h2>Registrar Nuevo Lugar</h2>
+                    </div>
+                    <form id="lugarForm" class="modern-form" onsubmit="registrarLugar(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="lugarNombre">Nombre del Lugar</label>
+                                <input type="text" id="lugarNombre" placeholder="Ej: A-21" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lugarDescripcion">Descripción</label>
+                                <input type="text" id="lugarDescripcion" placeholder="Descripción del lugar" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <span class="material-symbols-outlined">add</span>
+                            Registrar Lugar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehículos -->
+        <div id="vehiculosSection" class="content-section">
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab('registroVehiculo')">Registrar Vehículo</button>
+                    <button class="tab-btn" onclick="switchTab('controlVehiculo')">Control de Vehículos</button>
+                </div>
+
+                <!-- Tab: Registrar Vehículo -->
+                <div id="registroVehiculo" class="tab-content active">
+                    <div class="form-panel">
+                        <div class="panel-header">
+                            <h2>Registro de Vehículo</h2>
+                        </div>
+                        <form id="vehicleForm" class="modern-form" onsubmit="addVehicle(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="Plates">Placas *</label>
+                                    <input type="text" id="Plates" name="Plates" placeholder="ABC-123-XY" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Type">Tipo de Vehículo *</label>
+                                    <select id="Type" name="Type" required>
+                                        <option value="0">Moto</option>
+                                        <option value="1">Coche</option>
+                                        <option value="2">Camioneta</option>
+                                        <option value="3">Camión</option>
+                                        <option value="4">Bicicleta</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row" id="lugarSelectRow" style="display:none;">
+                                <div class="form-group">
+                                    <label for="lugarAsignado">Lugar Asignado</label>
+                                    <select id="lugarAsignado">
+                                        <option value="">Asignar automáticamente</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="esRecurrente" checked>
+                                    <span>Vehículo Recurrente (Usuario registrado)</span>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn-submit">
+                                <span class="material-symbols-outlined">add</span>
+                                Registrar Vehículo
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Control de Vehículos -->
+                <div id="controlVehiculo" class="tab-content">
+                    <div class="table-panel">
+                        <div class="table-actions">
+                            <button class="btn-action" onclick="loadAllVehicles()">
+                                <span class="material-symbols-outlined">refresh</span>
+                                Mostrar Todos
+                            </button>
+                            <button class="btn-action btn-danger" onclick="deleteSelectedVehicle()">
+                                <span class="material-symbols-outlined">delete</span>
+                                Eliminar
+                            </button>
+                            <button class="btn-action" onclick="updateSelectedVehicle()">
+                                <span class="material-symbols-outlined">edit</span>
+                                Actualizar
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table id="vehiclesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Seleccionar</th>
+                                        <th>Placas</th>
+                                        <th>Tipo</th>
+                                        <th>Estado</th>
+                                        <th>QR</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vehiclesTableBody">
+                                    <tr>
+                                        <td colspan="5" class="no-data">No hay vehículos registrados</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lugares -->
+        <div id="lugaresSection" class="content-section">
+            <div class="panel-header">
+                <h2>Gestión de Lugares de Estacionamiento</h2>
+            </div>
+            
+            <!-- Control de Acceso (Solo Trabajadores) -->
+            <div id="controlAccesoPanel" class="control-access-panel" style="display:none;">
+                <div class="access-control-form">
+                    <h3>Control de Entrada/Salida</h3>
+                    <div class="qr-input-group">
+                        <input type="text" id="qrInput" placeholder="Escanear QR o ingresar placas" class="qr-input">
+                        <button class="btn-entrada" onclick="procesarEntrada()">
+                            <span class="material-symbols-outlined">login</span>
+                            Entrada
+                        </button>
+                        <button class="btn-salida" onclick="procesarSalida()">
+                            <span class="material-symbols-outlined">logout</span>
+                            Salida
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Lugares -->
+            <div class="parking-grid-container">
+                <h3>Estado del Estacionamiento</h3>
+                <div id="parkingGrid" class="parking-grid"></div>
+            </div>
+
+            <!-- Historial de Registros -->
+            <div id="registrosPanel" class="table-panel" style="display:none;">
+                <h3>Historial de Registros</h3>
+                <div class="table-container">
+                    <table id="registrosTable">
+                        <thead>
+                            <tr>
+                                <th>Placas</th>
+                                <th>Modelo</th>
+                                <th>Lugar</th>
+                                <th>Entrada</th>
+                                <th>Salida</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrosTableBody">
+                            <tr>
+                                <td colspan="6" class="no-data">No hay registros</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usuarios (Solo Admin) -->
+        <div id="usuariosSection" class="content-section">
+            <div class="panel-header">
+                <h2>Gestión de Usuarios</h2>
+            </div>
+            <div class="user-info-display">
+                <div class="current-user-card">
+                    <div class="user-avatar-large">
+                        <span class="material-symbols-outlined">account_circle</span>
+                    </div>
+                    <h3 id="currentUserDisplay">Usuario Actual</h3>
+                    <p id="currentUserRoleDisplay">Rol</p>
+                </div>
+            </div>
+            <div class="table-panel">
+                <div class="table-actions">
+                    <select id="userFilterSelect" class="filter-select">
+                        <option value="">Todos los roles</option>
+                        <option value="Estudiante">Estudiante</option>
+                        <option value="Maestro">Maestro</option>
+                        <option value="Directivo">Directivo</option>
+                        <option value="Trabajador">Trabajador</option>
+                        <option value="Administracion">Administración</option>
+                    </select>
+                    <button class="btn-action" onclick="loadAllUsers()">
+                        <span class="material-symbols-outlined">refresh</span>
+                        Mostrar Usuarios
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="4" class="no-data">No hay usuarios</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="vehicleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Agregar Vehículo</h2>
+                <button onclick="closeModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="vehicleForm" onsubmit="addVehicle(event)">
+                <div class="form-group">
+                    <label for="placas">Placas</label>
+                    <input type="text" id="placas" required placeholder="ABC-123-XY">
+                </div>
+                <div class="form-group">
+                    <label for="modelo">Modelo</label>
+                    <input type="text" id="modelo" required placeholder="Toyota Corolla 2020">
+                </div>
+                <div class="form-group">
+                    <label for="color">Color</label>
+                    <select id="color" required>
+                        <option value="">Selecciona un color</option>
+                        <option value="Blanco">Blanco</option>
+                        <option value="Negro">Negro</option>
+                        <option value="Gris">Gris</option>
+                        <option value="Plata">Plata</option>
+                        <option value="Rojo">Rojo</option>
+                        <option value="Azul">Azul</option>
+                        <option value="Verde">Verde</option>
+                        <option value="Amarillo">Amarillo</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Tipo de Vehículo</label>
+                    <select id="tipo" required>
+                        <option value="Coche">Coche</option>
+                        <option value="Moto">Moto</option>
+                        <option value="Bicicleta">Bicicleta</option>
+                        <option value="Camioneta">Camioneta</option>
+                        <option value="Camion">Camión</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="esRecurrente" checked>
+                        Vehículo Recurrente
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de QR -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Código QR del Vehículo</h2>
+                <button onclick="closeQRModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div style="padding: 2rem; text-align: center;">
+                <div id="qrPlacas" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--primary);"></div>
+                <div id="qrcode" style="display: flex; justify-content: center; margin: 2rem 0;"></div>
+                <p style="color: var(--muted); margin-bottom: 1.5rem;">Escanea este código para acceder al estacionamiento</p>
+                <button class="btn-primary" onclick="downloadQR()">
+                    <span class="material-symbols-outlined">download</span>
+                    Descargar QR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard-new.js"></script>
+</body>
+</html>

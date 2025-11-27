@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Beaver Parking</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container page-content">
+        <div class="auth-card">
+            <h1>
+                <img src="images/logo_transparent.png" alt="Beaver Parking Logo" class="logo-login">
+                <br />
+                Crear Cuenta
+            </h1>
+
+            <div id="errorMessage" class="alert alert-danger" style="display: none; margin-bottom: 1rem; padding: 0.75rem; background: #FEE2E2; color: #DC2626; border-radius: 0.5rem;"></div>
+
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="Name">Nombre</label>
+                    <input type="text" id="Name" name="Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="LastName">Apellido</label>
+                    <input type="text" id="LastName" name="LastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    <input type="email" id="Email" name="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Contraseña</label>
+                    <input type="password" id="Password" name="Password" required>
+                </div>
+                <div class="form-group">
+                    <label for="UserRole">Rol</label>
+                    <select id="UserRole" name="UserRole" required>
+                        <option value="">Selecciona un rol</option>
+                        <option value="0">Estudiante</option>
+                        <option value="1">Maestro</option>
+                        <option value="2">Directivo</option>
+                        <option value="3">Trabajador</option>
+                        <option value="4">Administrador</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Registrarse</button>
+            </form>
+            <p class="auth-link">¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+            <p class="auth-link"><a href="index.html">Volver al inicio</a></p>
+        </div>
+    </div>
+    <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

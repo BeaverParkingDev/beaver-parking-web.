@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Beaver Parking</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container page-content">
+        <div class="auth-card">
+            <h1>
+                <img src="images/logo_transparent.png" alt="Beaver Parking Logo" class="logo-login">
+                <br />
+                Iniciar Sesión
+            </h1>
+
+            <div id="errorMessage" class="alert alert-danger" style="display: none; margin-bottom: 1rem; padding: 0.75rem; background: #FEE2E2; color: #DC2626; border-radius: 0.5rem;"></div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    <input type="email" id="Email" name="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Contraseña</label>
+                    <input type="password" id="Password" name="Password" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Ingresar</button>
+            </form>
+            <p class="auth-link">¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></p>
+            <p class="auth-link"><a href="index.html">Volver al inicio</a></p>
+        </div>
+    </div>
+    <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
